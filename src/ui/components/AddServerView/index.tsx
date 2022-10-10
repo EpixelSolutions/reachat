@@ -34,7 +34,7 @@ import { ADD_SERVER_VIEW_SERVER_ADDED } from '../../actions';
 import { RocketChatLogo } from '../RocketChatLogo';
 import { Wrapper } from './styles';
 
-const defaultServerUrl = new URL('https://open.rocket.chat/');
+const defaultServerUrl = new URL('https://chat.epixel.in/');
 
 export const AddServerView: FC = () => {
   const isVisible = useSelector(

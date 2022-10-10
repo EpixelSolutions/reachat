@@ -37,7 +37,6 @@ type CurrentViewAction =
 type CurrentViewState =
   | 'add-new-server'
   | 'downloads'
-  | 'settings'
   | { url: string };
 
 export const currentView = (
@@ -66,11 +65,6 @@ export const currentView = (
       return selected ? { url: selected } : 'add-new-server';
     }
 
-    case APP_SETTINGS_LOADED: {
-      const { currentView = state } = action.payload;
-      return currentView;
-    }
-
     case MENU_BAR_ADD_NEW_SERVER_CLICKED:
     case SIDE_BAR_ADD_NEW_SERVER_CLICKED:
       return 'add-new-server';
@@ -86,8 +80,6 @@ export const currentView = (
     case SIDE_BAR_DOWNLOADS_BUTTON_CLICKED:
       return 'downloads';
 
-    case SIDE_BAR_SETTINGS_BUTTON_CLICKED:
-      return 'settings';
   }
 
   return state;

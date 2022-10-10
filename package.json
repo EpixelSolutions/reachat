@@ -3,12 +3,12 @@
   "workspaces": [
     "workspaces/*"
   ],
-  "name": "rocketchat",
-  "description": "Official OSX, Windows, and Linux Desktop Clients for Rocket.Chat",
-  "version": "3.8.11",
-  "author": "Rocket.Chat Support <support@rocket.chat>",
-  "copyright": "© 2016-2021, Rocket.Chat",
-  "homepage": "https://rocket.chat",
+  "name": "reachat",
+  "description": "Official OSX, Windows, and Linux Desktop Clients for Reach@ by Epixel solutions",
+  "version": "1.0.0",
+  "author": "Reach@ Support <support@rocket.chat>",
+  "copyright": "© 2022, Epixel solutions",
+  "homepage": "https://chat.epixel.in",
   "license": "MIT",
   "keywords": [
     "rocketchat",
@@ -24,8 +24,8 @@
   },
   "main": "app/main.js",
   "scripts": {
+    "start": "electron-forge start",
     "postinstall": "run-s install-app-deps clean",
-    "start": "run-s clean build:watch",
     "clean": "rimraf app dist",
     "build": "run-p .:build:rollup .:build:workspaces",
     "build-mac": "yarn --silent electron-builder --publish never --mac",
@@ -42,7 +42,9 @@
     ".:lint:eslint": "eslint .",
     ".:lint:tsc": "tsc --noEmit --skipLibCheck",
     "lint-fix": "run-s .:lint-fix:eslint .:lint:tsc",
-    ".:lint-fix:eslint": "eslint --fix ."
+    ".:lint-fix:eslint": "eslint --fix .",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "dependencies": {
     "@bugsnag/js": "^7.16.0",
@@ -56,6 +58,7 @@
     "@rocket.chat/icons": "^0.31.1",
     "abort-controller": "^3.0.0",
     "electron-dl": "^3.3.1",
+    "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^8.1.0",
     "electron-updater": "^5.2.1",
     "i18next": "^21.6.10",
@@ -77,6 +80,11 @@
     "@babel/plugin-proposal-function-bind": "^7.16.7",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
+    "@electron-forge/cli": "^6.0.0-beta.67",
+    "@electron-forge/maker-deb": "^6.0.0-beta.67",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.67",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.67",
+    "@electron-forge/maker-zip": "^6.0.0-beta.67",
     "@fiahfy/icns-convert": "^0.0.12",
     "@fiahfy/ico-convert": "^0.0.12",
     "@jest-runner/electron": "^3.0.1",
@@ -105,9 +113,9 @@
     "conventional-changelog-cli": "^2.2.2",
     "convert-svg-to-png": "^0.5.0",
     "electron": "^17.4.11",
-    "electron-builder": "^23.5.0",
     "electron-devtools-installer": "^3.2.0",
     "electron-notarize": "^1.2.1",
+    "electron-rebuild": "^3.2.9",
     "eslint": "^7.32.0",
     "jest": "^26.6.3",
     "jimp": "^0.16.1",
@@ -131,5 +139,32 @@
     "node": ">=12.8.x",
     "yarn": ">=1.22.x"
   },
-  "productName": "Rocket.Chat"
+  "productName": "reachat",
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "reachat"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  }
 }

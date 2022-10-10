@@ -28,7 +28,7 @@ const createTouchBar = (): [
   TouchBarSegmentedControl
 ] => {
   const serverSelectionScrubber = new TouchBar.TouchBarScrubber({
-    selectedStyle: 'background',
+    selectedStyle: 'outline',
     mode: 'free',
     continuous: false,
     items: [],

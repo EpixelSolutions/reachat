@@ -3,14 +3,14 @@
   "extraResources": ["build/icon.ico", "servers.json"],
   "appId": "chat.rocket",
   "protocols": {
-        "name": "Rocket.Chat",
-        "schemes": ["rocketchat"]
+        "name": "Reach@",
+        "schemes": ["Reach@"]
   },
   "mac": {
     "category": "public.app-category.productivity",
     "target": ["dmg", "pkg", "zip", "mas"],
     "icon": "build/icon.icns",
-    "bundleVersion": "98",
+    "bundleVersion": "1",
     "helperBundleId": "chat.rocket.electron.helper",
     "type": "distribution",
     "artifactName": "rocketchat-${version}-${os}.${ext}",
@@ -47,7 +47,7 @@
     "entitlementsInherit": "build/entitlements.mas.inherit.plist",
     "hardenedRuntime": true,
     "asarUnpack": ["node_modules"],
-    "artifactName": "rocketchat-${version}-mas.${ext}"
+    "artifactName": "reach@-${version}-${os}-${arch}.${ext}"
   },
   "win": {
     "target": [
@@ -65,13 +65,13 @@
       }
     ],
     "icon": "build/icon.ico",
-    "publisherName": "Rocket.Chat Technologies Corp.",
+    "publisherName": "Epixel Solution pvt Ltd.",
     "legalTrademarks": "",
     "verifyUpdateCodeSignature": true,
     "requestedExecutionLevel": "asInvoker",
     "signAndEditExecutable": true,
     "signDlls": false,
-    "artifactName": "rocketchat-${version}-${os}-${arch}.${ext}"
+    "artifactName": "reach@-${version}-${os}-${arch}.${ext}"
   },
   "nsis": {
     "oneClick": false,
@@ -96,19 +96,19 @@
   },
   "appx": {
     "backgroundColor": "#2f343d",
-    "displayName": "Rocket.Chat",
-    "publisherDisplayName": "Rocket.Chat",
+    "displayName": "Reach@",
+    "publisherDisplayName": "Reach@",
     "languages": ["en-US", "en-GB", "pt-BR"]
   },
   "linux": {
     "target": ["AppImage", "tar.gz", "deb", "rpm", "snap"],
-    "executableName": "rocketchat-desktop",
+    "executableName": "ReachAt",
     "category": "GNOME;GTK;Network;InstantMessaging",
     "desktop": {
-      "StartupWMClass": "Rocket.Chat",
+      "StartupWMClass": "Reach@",
       "MimeType": "x-scheme-handler/rocketchat"
     },
-    "artifactName": "rocketchat-${version}-${os}-${arch}.${ext}"
+    "artifactName": "reach@-${version}-${os}-${arch}.${ext}"
   },
   "rpm": {
     "fpm": ["--rpm-rpmbuild-define=_build_id_links none"]

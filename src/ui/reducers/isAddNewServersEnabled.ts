@@ -6,7 +6,7 @@ import { ActionOf } from '../../store/actions';
 export const isAddNewServersEnabled: Reducer<
   boolean,
   ActionOf<typeof APP_SETTINGS_LOADED>
-> = (state = true, action) => {
+> = (state = false, action) => {
   switch (action.type) {
     case APP_SETTINGS_LOADED:
       return Boolean(action.payload.isAddNewServersEnabled);

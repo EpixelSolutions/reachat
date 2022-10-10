@@ -2,16 +2,12 @@ import { Box, Tabs } from '@rocket.chat/fuselage';
 import '@rocket.chat/fuselage-polyfills';
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
-import { RootState } from '../../../store/rootReducer';
 import { CertificatesTab } from './CertificatesTab';
 import { GeneralTab } from './GeneralTab';
 
 export const SettingsView: FC = () => {
-  const isVisible = useSelector(
-    ({ currentView }: RootState) => currentView === 'settings'
-  );
+  const isVisible = false
   const { t } = useTranslation();
 
   const [currentTab, setCurrentTab] = useState('general');

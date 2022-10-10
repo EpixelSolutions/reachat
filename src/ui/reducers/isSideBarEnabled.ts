@@ -13,7 +13,7 @@ type IsSideBarEnabledAction =
   | ActionOf<typeof APP_SETTINGS_LOADED>;
 
 export const isSideBarEnabled: Reducer<boolean, IsSideBarEnabledAction> = (
-  state = true,
+  state = false,
   action
 ) => {
   switch (action.type) {
