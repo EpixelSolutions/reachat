@@ -70,4 +70,3 @@ export const setupApp = (): void => {
   dispatch({ type: APP_PATH_SET, payload: app.getAppPath() });
   dispatch({ type: APP_VERSION_SET, payload: app.getVersion() });
 };
-//fdfdffdfd
