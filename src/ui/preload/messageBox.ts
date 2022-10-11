@@ -15,7 +15,7 @@ const handleFocusEvent = (event: FocusEvent): void => {
   if (!event.target.classList.contains('js-input-message')) {
     return;
   }
-  
+
   focusedMessageBoxInput = event.target;
   dispatch({ type: WEBVIEW_MESSAGE_BOX_FOCUSED });
 };

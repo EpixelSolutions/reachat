@@ -11,6 +11,7 @@ import { RootState } from '../../../store/rootReducer';
 import {
   SIDE_BAR_ADD_NEW_SERVER_CLICKED,
   SIDE_BAR_DOWNLOADS_BUTTON_CLICKED,
+  SIDE_BAR_SETTINGS_BUTTON_CLICKED,
 } from '../../actions';
 import { useServers } from '../hooks/useServers';
 import ServerButton from './ServerButton';
@@ -57,13 +58,15 @@ export const SideBar: FC = () => {
   const handelDownloadsButtonClicked = (): void => {
     dispatch({ type: SIDE_BAR_DOWNLOADS_BUTTON_CLICKED });
   };
-
+  const handelSettingsButtonClicked = (): void => {
+    dispatch({ type: SIDE_BAR_SETTINGS_BUTTON_CLICKED });
+  };
   const { t } = useTranslation();
 
   const currentView = useSelector(({ currentView }: RootState) => currentView);
 
   return (
-    <Wrapper sideBarStyle={style} isVisible={isVisible}>
+    <Wrapper sideBarStyle={style} isVisible={1?false:isVisible}>
       <Content withWindowButtons={process.platform === 'darwin'}>
         <ServerList>
           {sortedServers.map((server, order) => (
@@ -117,7 +120,15 @@ export const SideBar: FC = () => {
               <Icon name='download' />
             </SidebarActionButton>
           </Button>
-         
+          <Button>
+            <SidebarActionButton
+              tooltip={t('sidebar.settings')}
+              onClick={handelSettingsButtonClicked}
+              isSelected={currentView === 'settings'}
+            >
+              <Icon name='cog' />
+            </SidebarActionButton>
+          </Button>
         </BottomButtons>
       </Content>
     </Wrapper>

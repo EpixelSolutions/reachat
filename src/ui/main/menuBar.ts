@@ -1,20 +1,29 @@
 import {
   Menu,
   app,
+  shell,
   MenuItemConstructorOptions,
+  BrowserWindow,
 } from 'electron';
 import i18next from 'i18next';
 import { createSelector, createStructuredSelector } from 'reselect';
 
+import { relaunchApp } from '../../app/main/app';
+import { CERTIFICATES_CLEARED } from '../../navigation/actions';
 import { dispatch, select, Service } from '../../store';
 import { RootState } from '../../store/rootReducer';
 import {
+  MENU_BAR_ABOUT_CLICKED,
   MENU_BAR_ADD_NEW_SERVER_CLICKED,
   MENU_BAR_SELECT_SERVER_CLICKED,
+  MENU_BAR_TOGGLE_IS_MENU_BAR_ENABLED_CLICKED,
   MENU_BAR_TOGGLE_IS_SHOW_WINDOW_ON_UNREAD_CHANGED_ENABLED_CLICKED,
+  MENU_BAR_TOGGLE_IS_SIDE_BAR_ENABLED_CLICKED,
   MENU_BAR_TOGGLE_IS_TRAY_ICON_ENABLED_CLICKED,
   SIDE_BAR_DOWNLOADS_BUTTON_CLICKED,
+  SIDE_BAR_SETTINGS_BUTTON_CLICKED,
 } from '../actions';
+import { askForAppDataReset } from './dialogs';
 import { getRootWindow } from './rootWindow';
 import { getWebContentsByServerUrl } from './serverView';
 
@@ -35,10 +44,74 @@ const selectAddServersDeps = createStructuredSelector<
 
 const createAppMenu = createSelector(
   selectAddServersDeps,
-  ({ }): MenuItemConstructorOptions => ({
+  ({ isAddNewServersEnabled }): MenuItemConstructorOptions => ({
     id: 'appMenu',
     label: process.platform === 'darwin' ? app.name : t('menus.fileMenu'),
-    submenu: [     
+    submenu: [
+      ...on(process.platform === 'darwin', () => [
+        {
+          id: 'about',
+          label: t('menus.about', { appName: app.name }),
+          click: async () => {
+            const browserWindow = await getRootWindow();
+
+            if (!browserWindow.isVisible()) {
+              browserWindow.showInactive();
+            }
+            browserWindow.focus();
+            dispatch({ type: MENU_BAR_ABOUT_CLICKED });
+          },
+        },
+        { type: 'separator' },
+        {
+          id: 'services',
+          label: t('menus.services'),
+          role: 'services',
+        },
+        { type: 'separator' },
+        {
+          id: 'hide',
+          label: t('menus.hide', { appName: app.name }),
+          role: 'hide',
+        },
+        {
+          id: 'hideOthers',
+          label: t('menus.hideOthers'),
+          role: 'hideOthers',
+        },
+        {
+          id: 'unhide',
+          label: t('menus.unhide'),
+          role: 'unhide',
+        },
+        { type: 'separator' },
+      ]),
+      ...on(process.platform !== 'darwin' && isAddNewServersEnabled, () => [
+        {
+          id: 'addNewServer',
+          label: t('menus.addNewServer'),
+          accelerator: 'CommandOrControl+N',
+          click: async () => {
+            const browserWindow = await getRootWindow();
+
+            if (!browserWindow.isVisible()) {
+              browserWindow.showInactive();
+            }
+            browserWindow.focus();
+            dispatch({ type: MENU_BAR_ADD_NEW_SERVER_CLICKED });
+          },
+        },
+        { type: 'separator' },
+      ]),
+      // {
+      //   id: 'disableGpu',
+      //   label: t('menus.disableGpu'),
+      //   enabled: !app.commandLine.hasSwitch('disable-gpu'),
+      //   click: () => {
+      //     relaunchApp('--disable-gpu');
+      //   },
+      // },
+      { type: 'separator' },
       {
         id: 'quit',
         label: t('menus.quit', { appName: app.name }),
@@ -50,6 +123,47 @@ const createAppMenu = createSelector(
     ],
   })
 );
+
+// const createEditMenu = createSelector(
+//   () => undefined,
+//   (): MenuItemConstructorOptions => ({
+//     id: 'editMenu',
+//     label: t('menus.editMenu'),
+//     submenu: [
+//       {
+//         id: 'undo',
+//         label: t('menus.undo'),
+//         role: 'undo',
+//       },
+//       {
+//         id: 'redo',
+//         label: t('menus.redo'),
+//         role: 'redo',
+//       },
+//       { type: 'separator' },
+//       {
+//         id: 'cut',
+//         label: t('menus.cut'),
+//         role: 'cut',
+//       },
+//       {
+//         id: 'copy',
+//         label: t('menus.copy'),
+//         role: 'copy',
+//       },
+//       {
+//         id: 'paste',
+//         label: t('menus.paste'),
+//         role: 'paste',
+//       },
+//       {
+//         id: 'selectAll',
+//         label: t('menus.selectAll'),
+//         role: 'selectAll',
+//       },
+//     ],
+//   })
+// );
 
 const selectViewDeps = createStructuredSelector<
   RootState,
@@ -73,7 +187,9 @@ const createViewMenu = createSelector(
   selectViewDeps,
   ({
     currentView,
+    isSideBarEnabled,
     isTrayIconEnabled,
+    isMenuBarEnabled,
     rootWindowState,
   }): MenuItemConstructorOptions => ({
     id: 'viewMenu',
@@ -116,6 +232,34 @@ const createViewMenu = createSelector(
           guestWebContents?.reloadIgnoringCache();
         },
       },
+      // {
+      //   id: 'openDevTools',
+      //   label: t('menus.openDevTools'),
+      //   enabled: typeof currentView === 'object' && !!currentView.url,
+      //   accelerator:
+      //     process.platform === 'darwin' ? 'Command+Alt+I' : 'Ctrl+Shift+I',
+      //   click: () => {
+      //     const guestWebContents =
+      //       typeof currentView === 'object'
+      //         ? getWebContentsByServerUrl(currentView.url)
+      //         : null;
+      //     guestWebContents?.toggleDevTools();
+      //   },
+      // },
+      // {
+      //   id: 'openDevToolsOnAllWindows',
+      //   label: t('menus.openDevToolsOnAllWindows'),
+      //   enabled: typeof currentView === 'object' && !!currentView.url,
+      //   accelerator:
+      //     process.platform === 'darwin' ? 'Command+Alt+G' : 'Ctrl+Shift+G',
+      //   click: () => {
+      //     const windows = BrowserWindow.getAllWindows();
+      //     windows.forEach((window) => {
+      //       window.webContents.toggleDevTools();
+      //     });
+      //   },
+      // },
+      { type: 'separator' },
       {
         id: 'back',
         label: t('menus.back'),
@@ -188,7 +332,49 @@ const createViewMenu = createSelector(
             browserWindow.setFullScreen(enabled);
           },
         },
-      ]),      
+      ]),
+      // ...on(process.platform !== 'darwin', () => [
+      //   {
+      //     id: 'showMenuBar',
+      //     label: t('menus.showMenuBar'),
+      //     type: 'checkbox',
+      //     checked: isMenuBarEnabled,
+      //     accelerator:
+      //       process.platform === 'darwin' ? 'Shift+Command+M' : 'Ctrl+Shift+M',
+      //     click: async ({ checked }) => {
+      //       const browserWindow = await getRootWindow();
+
+      //       if (!browserWindow.isVisible()) {
+      //         browserWindow.showInactive();
+      //       }
+      //       browserWindow.focus();
+      //       dispatch({
+      //         type: MENU_BAR_TOGGLE_IS_MENU_BAR_ENABLED_CLICKED,
+      //         payload: checked,
+      //       });
+      //     },
+      //   },
+      // ]),
+      // {
+      //   id: 'showServerList',
+      //   label: t('menus.showServerList'),
+      //   type: 'checkbox',
+      //   checked: isSideBarEnabled,
+      //   accelerator:
+      //     process.platform === 'darwin' ? 'Shift+Command+S' : 'Ctrl+Shift+S',
+      //   click: async ({ checked }) => {
+      //     const browserWindow = await getRootWindow();
+
+      //     if (!browserWindow.isVisible()) {
+      //       browserWindow.showInactive();
+      //     }
+      //     browserWindow.focus();
+      //     dispatch({
+      //       type: MENU_BAR_TOGGLE_IS_SIDE_BAR_ENABLED_CLICKED,
+      //       payload: checked,
+      //     });
+      //   },
+      // },
       { type: 'separator' },
       {
         id: 'resetZoom',
@@ -358,6 +544,21 @@ const createWindowMenu = createSelector(
           dispatch({ type: SIDE_BAR_DOWNLOADS_BUTTON_CLICKED });
         },
       },
+      // {
+      //   id: 'settings',
+      //   label: t('menus.settings'),
+      //   checked: currentView === 'settings',
+      //   accelerator: 'CommandOrControl+I',
+      //   click: async () => {
+      //     const browserWindow = await getRootWindow();
+
+      //     if (!browserWindow.isVisible()) {
+      //       browserWindow.showInactive();
+      //     }
+      //     browserWindow.focus();
+      //     dispatch({ type: SIDE_BAR_SETTINGS_BUTTON_CLICKED });
+      //   },
+      // },
       {
         id: 'showOnUnreadMessage',
         type: 'checkbox',
@@ -393,13 +594,119 @@ const createWindowMenu = createSelector(
   })
 );
 
+// const createHelpMenu = createSelector(
+//   () => undefined,
+//   (): MenuItemConstructorOptions => ({
+//     id: 'helpMenu',
+//     label: t('menus.helpMenu'),
+//     role: 'help',
+//     submenu: [
+//       {
+//         id: 'documentation',
+//         label: t('menus.documentation'),
+//         click: () => {
+//           shell.openExternal('https://docs.rocket.chat/');
+//         },
+//       },
+//       {
+//         id: 'reportIssue',
+//         label: t('menus.reportIssue'),
+//         click: () => {
+//           shell.openExternal(
+//             'https://github.com/RocketChat/Rocket.Chat/issues/new'
+//           );
+//         },
+//       },
+//       { type: 'separator' },
+//       {
+//         id: 'reload-window',
+//         label: t('menus.reload'),
+//         accelerator: 'CommandOrControl+Shift+R',
+//         click: async () => {
+//           const browserWindow = await getRootWindow();
 
+//           if (!browserWindow.isVisible()) {
+//             browserWindow.showInactive();
+//           }
+//           browserWindow.focus();
+//           browserWindow.webContents.reload();
+//         },
+//       },
+//       {
+//         id: 'toggleDevTools',
+//         label: t('menus.toggleDevTools'),
+//         accelerator: 'CommandOrControl+Shift+D',
+//         click: async () => {
+//           const browserWindow = await getRootWindow();
+
+//           if (!browserWindow.isVisible()) {
+//             browserWindow.showInactive();
+//           }
+//           browserWindow.focus();
+//           browserWindow.webContents.toggleDevTools();
+//         },
+//       },
+//       { type: 'separator' },
+//       {
+//         id: 'clearTrustedCertificates',
+//         label: t('menus.clearTrustedCertificates'),
+//         click: async () => {
+//           const browserWindow = await getRootWindow();
+
+//           if (!browserWindow.isVisible()) {
+//             browserWindow.showInactive();
+//           }
+//           browserWindow.focus();
+//           dispatch({ type: CERTIFICATES_CLEARED });
+//         },
+//       },
+//       ...on(!process.mas, () => [
+//         {
+//           id: 'resetAppData',
+//           label: t('menus.resetAppData'),
+//           click: async () => {
+//             const permitted = await askForAppDataReset();
+
+//             if (permitted) {
+//               relaunchApp('--reset-app-data');
+//             }
+//           },
+//         },
+//       ]),
+//       { type: 'separator' },
+//       {
+//         id: 'learnMore',
+//         label: t('menus.learnMore'),
+//         click: () => {
+//           shell.openExternal('https://rocket.chat');
+//         },
+//       },
+//       ...on(process.platform !== 'darwin', () => [
+//         {
+//           id: 'about',
+//           label: t('menus.about', { appName: app.name }),
+//           click: async () => {
+//             const browserWindow = await getRootWindow();
+
+//             if (!browserWindow.isVisible()) {
+//               browserWindow.showInactive();
+//             }
+//             browserWindow.focus();
+//             dispatch({ type: MENU_BAR_ABOUT_CLICKED });
+//           },
+//         },
+//       ]),
+//     ],
+//   })
+// );
 
 const selectMenuBarTemplate = createSelector(
   [
     createAppMenu,
+    // createEditMenu,
     createViewMenu,
     createWindowMenu,
+    // createHelpMenu,
   ],
   (...menus) => menus
 );

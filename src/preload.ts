@@ -63,5 +63,6 @@ const start = async (): Promise<void> => {
     handleTrafficLightsSpacing();
   });
 };
+
 console.log('[Rocket.Chat Desktop] waiting for window load');
 window.addEventListener('load', start);
