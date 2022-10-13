@@ -1,4 +1,6 @@
 {
+
+  
   "private": true,
   "workspaces": [
     "workspaces/*"
@@ -24,6 +26,9 @@
   },
   "main": "app/main.js",
   "scripts": {
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
     "postinstall": "run-s install-app-deps clean",
     "start": "run-s clean build:watch",
     "clean": "rimraf app dist",
@@ -44,6 +49,25 @@
     "lint-fix": "run-s .:lint-fix:eslint .:lint:tsc",
     ".:lint-fix:eslint": "eslint --fix ."
   },
+  "config": {
+    "forge": {
+      "publishers": [
+        {
+          "name": "@electron-forge/publisher-github",
+          "config": {
+            "repository": {
+              "owner": "github-user-name",
+              "name": "github-repo-name"
+            },
+            "prerelease": false,
+            "draft": true
+          }
+        }
+      ]
+    }
+  },
+
+  
   "dependencies": {
     "@bugsnag/js": "^7.16.0",
     "@emotion/css": "^11.7.1",
@@ -77,6 +101,7 @@
     "@babel/plugin-proposal-function-bind": "^7.16.7",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
+    "@electron-forge/publisher-github": "^6.0.0-beta.67",
     "@fiahfy/icns-convert": "^0.0.12",
     "@fiahfy/ico-convert": "^0.0.12",
     "@jest-runner/electron": "^3.0.1",

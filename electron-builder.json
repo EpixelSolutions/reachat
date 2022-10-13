@@ -137,8 +137,8 @@
   "publish": [
     {
       "provider": "github",
-      "owner": "RocketChat",
-      "repo": "Rocket.Chat.Electron",
+      "owner": "EpixelSolutions",
+      "repo": "reachat",
       "vPrefixedTagName": false
     }
   ]
