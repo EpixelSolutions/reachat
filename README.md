@@ -1,14 +1,18 @@
 # Reach@ ,Team at your fingerprint
 ## Powered by Epixel Solution pvt. Ltd
 
+## Download
+
+## You can download the latest version from the [Releases][] page.
+
 [![Travis CI Build Status](https://img.shields.io/travis/RocketChat/Rocket.Chat.Electron/master.svg?logo=travis)](https://travis-ci.org/RocketChat/Rocket.Chat.Electron)
 [![AppVeyor Build Status](https://img.shields.io/appveyor/ci/RocketChat/rocket-chat-electron/master.svg?logo=appveyor)](https://ci.appveyor.com/project/RocketChat/rocket-chat-electron)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3a87141c0a4442809d9a2bff455e3102)](https://www.codacy.com/app/tassoevan/Rocket.Chat.Electron?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RocketChat/Rocket.Chat.Electron&amp;utm_campaign=Badge_Grade)
-[![Project Dependencies](https://david-dm.org/RocketChat/Rocket.Chat.Electron.svg)](https://david-dm.org/RocketChat/Rocket.Chat.Electron)
+
+
 [![GitHub All Releases](https://img.shields.io/github/downloads/RocketChat/Rocket.Chat.Electron/total.svg)](https://github.com/RocketChat/Rocket.Chat.Electron/releases/latest)
 ![GitHub](https://img.shields.io/github/license/RocketChat/Rocket.Chat.Electron.svg)
 
-Desktop application for [Rocket.Chat][] available for macOS, Windows and Linux
+Desktop application for [ReachAt][] available for macOS, Windows and Linux
 using [Electron][].
 
 ![Rocket.Chat Desktop App](https://user-images.githubusercontent.com/2263066/91490997-c0bd0c80-e889-11ea-92c7-2cbcc3aabc98.png)
@@ -27,11 +31,7 @@ releases, company related topics, events and use cases. [Sign Up!][]
 
 ---
 
-## Download
-
-You can download the latest version from the [Releases][] page.
-
-[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/rocketchat-desktop)
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/reachat-chat)
 
 ## Install
 
@@ -250,7 +250,7 @@ When both are disabled, the app will quit on close.
 
 Released under the MIT license.
 
-[Rocket.Chat]: https://chat.epixel.in
+[ReachAt]: https://chat.epixel.in
 
 [Electron]: https://electronjs.org/
 
