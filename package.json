@@ -24,7 +24,7 @@
   },
   "main": "app/main.js",
   "scripts": {
-    "start": "electron-forge start",
+    "start": "run-s clean build:watch",
     "postinstall": "run-s install-app-deps clean",
     "clean": "rimraf app dist",
     "build": "run-p .:build:rollup .:build:workspaces",
@@ -42,9 +42,7 @@
     ".:lint:eslint": "eslint .",
     ".:lint:tsc": "tsc --noEmit --skipLibCheck",
     "lint-fix": "run-s .:lint-fix:eslint .:lint:tsc",
-    ".:lint-fix:eslint": "eslint --fix .",
-    "package": "electron-forge package",
-    "make": "electron-forge make"
+    ".:lint-fix:eslint": "eslint --fix ."
   },
   "dependencies": {
     "@bugsnag/js": "^7.16.0",
