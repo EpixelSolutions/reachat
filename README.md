@@ -1,4 +1,5 @@
-# Rocket.Chat Desktop App
+# Reach@ ,Team at your fingerprint
+## Powered by Epixel Solution pvt. Ltd
 
 [![Travis CI Build Status](https://img.shields.io/travis/RocketChat/Rocket.Chat.Electron/master.svg?logo=travis)](https://travis-ci.org/RocketChat/Rocket.Chat.Electron)
 [![AppVeyor Build Status](https://img.shields.io/appveyor/ci/RocketChat/rocket-chat-electron/master.svg?logo=appveyor)](https://ci.appveyor.com/project/RocketChat/rocket-chat-electron)
@@ -249,7 +250,7 @@ When both are disabled, the app will quit on close.
 
 Released under the MIT license.
 
-[Rocket.Chat]: https://rocket.chat
+[Rocket.Chat]: https://chat.epixel.in
 
 [Electron]: https://electronjs.org/
 
@@ -259,7 +260,7 @@ Released under the MIT license.
 
 [Sign Up!]: https://rocket.chat/newsletter/?utm_source=github&utm_medium=readme&utm_campaign=community
 
-[Releases]: https://github.com/RocketChat/Rocket.Chat.Electron/releases/latest
+[Releases]: https://github.com/EpixelSolutions/reachat/releases
 
 [ongoing changes in Rocket.Chat codebase]: https://forums.rocket.chat/t/moving-away-from-meteor-and-beyond/3270
 
