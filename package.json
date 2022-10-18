@@ -32,7 +32,7 @@
     "build-win": "yarn --silent electron-builder --publish never --win",
     ".:build:rollup": "rollup -c",
     ".:build:workspaces": "yarn workspaces run build",
-    "release": "yarn electron-builder --publish onTagOrDraft --x64",
+    "release": "yarn electron-builder --publish always --x64",
     "build:watch": "rollup -c -w",
     "install-app-deps": "electron-builder install-app-deps",
     "test": "xvfb-maybe jest",
@@ -125,7 +125,8 @@
     "ts-jest": "^26.5.6",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.5",
-    "xvfb-maybe": "^0.2.1"
+    "xvfb-maybe": "^0.2.1",
+    "electron-builder": "^23.5.0"
   },
   "optionalDependencies": {
     "fsevents": "2.3.2"
